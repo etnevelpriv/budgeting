@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%=title%>
+    </title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <form action="/search" method="get">
+        <div class="input-group">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="nameInput">
+        </div>
+        <input type="submit" value="Search">
+    </form>
+    <form action="/expensive" method="get">
+        <div class="input-group">
+            <label for="amount">Min. Amount</label>
+            <input type="number" name="amount" id="amountInput">
+        </div>
+        <input type="submit" value="Search">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%koltesek.forEach((koltes)=>{ %>
+                <tr class="<%=koltes.category%>-sor">
+                    <td>
+                        <%=koltes.name%>
+                    </td>
+                    <td>
+                        <%=koltes.amount%>
+                    </td>
+                    <td>
+                        <%=koltes.category%>
+                    </td>
+                </tr>
+                <%})%>
+        </tbody>
+    </table>
+</body>
+
+</html>
