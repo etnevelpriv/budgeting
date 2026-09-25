@@ -1,20 +1,19 @@
 import { Controller, Get, Render, Query } from '@nestjs/common';
 import { AppService } from './app.service.js';
-import { Expense } from './Expense.js';
-import { get } from 'http';
+import { Expense } from './Expense.Class.ts';
 const expenses: Expense[] = [
-  { name: 'Heti bevásárlás', amount: 18500, category: 'food' },
-  { name: 'Ebéd', amount: 3200, category: 'food' },
-  { name: 'Pékség', amount: 1450, category: 'food' },
-  { name: 'Villanyszámla', amount: 12400, category: 'utilities' },
-  { name: 'Vízszámla', amount: 6800, category: 'utilities' },
-  { name: 'Internet', amount: 7500, category: 'utilities' },
-  { name: 'Mozijegy', amount: 2900, category: 'entertainment' },
-  { name: 'Koncertjegy', amount: 22000, category: 'entertainment' },
-  { name: 'Társasjáték', amount: 15900, category: 'entertainment' },
-  { name: 'Buszbérlet', amount: 8950, category: 'misc' },
-  { name: 'Füzet', amount: 1200, category: 'misc' },
-  { name: 'Hátizsák', amount: 17000, category: 'misc' },
+  new Expense('Heti bevásárlás', 18500, 'food'),
+  new Expense('Ebéd', 3200, 'food'),
+  new Expense('Pékség', 1450, 'food'),
+  new Expense('Villanyszámla', 12400, 'utilities'),
+  new Expense('Vízszámla', 6800, 'utilities'),
+  new Expense('Internet', 7500, 'utilities'),
+  new Expense('Mozijegy', 2900, 'entertainment'),
+  new Expense('Koncertjegy', 22000, 'entertainment'),
+  new Expense('Társasjáték', 15900, 'entertainment'),
+  new Expense('Buszbérlet', 8950, 'misc'),
+  new Expense('Füzet', 1200, 'misc'),
+  new Expense('Hátizsák', 17000, 'misc'),
 ];
 @Controller()
 export class AppController {
@@ -76,4 +75,43 @@ export class AppController {
       koltesek: searchedExpenses
     };
   };
+  @Get("/stats")
+  @Render("stats")
+  getStats() {
+    const osszDarab = expenses.length;
+    let osszKoltes = 0;
+    expenses.forEach((expense: Expense) => {
+      osszKoltes += expense.amount;
+    });
+    const atlagosKoltes = osszKoltes / osszDarab;
+    const categories = new Set();
+    expenses.forEach((expense: Expense) => {
+      categories.add(expense.category);
+    });
+    const categoriesStats: any[] = [];
+    categories.forEach((category) => {
+      categoriesStats.push({
+        categoryName: category,
+        categoryCount: 0,
+        categoryTotal: 0,
+        categoryAvg: 0
+      })
+    });
+    expenses.forEach((expense: Expense) => {
+      categoriesStats.forEach((categorie) => {
+        if (categorie.categoryName == expense.category) {
+          categorie.categoryCount++;
+          categorie.categoryTotal += expense.amount;
+        };
+      });
+    });
+    categoriesStats.forEach((categorie) => {
+      categorie.categoryAvg = categorie.categoryTotal/categorie.categoryCount;
+    });
+    return ({
+      osszDarab:osszDarab,
+      atlagKoltes:atlagosKoltes,
+      categories:categoriesStats
+    })
+  }
 };

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statisztika</title>
+</head>
+
+<body>
+    <ul>
+        <li><strong>Ossz koltes darab: </strong>
+            <%=osszDarab%>
+        </li>
+        <li><strong>Osszes koltes darab (ez ugyan az, mint az elozo, butasag): </strong>
+            <%=osszDarab%>
+        </li>
+        <li><strong>Koltesek atlaga: </strong>
+            <%=atlagKoltes%>
+        </li>
+        <li>
+            <strong>Kategoriankenti Statisztika:</strong>
+            <ul>
+                <%categories.forEach((category)=>{%>
+                <li><strong>
+                        <%=category.categoryName%>
+                    </strong>
+                    <ul>
+                        <li><strong>Koltesek darabszama: </strong>
+                            <%=category.categoryCount%>
+                        </li>
+                        <li>
+                            <strong>Koltesek ossz erteke:</strong>
+                            <%=category.categoryTotal%>
+                        </li>
+
+                        <li><strong>Koltesek atlagos erteke: </strong>
+                            <%=category.categoryAvg%>
+                        </li>
+                    </ul>
+                </li>
+                <%})%>
+            </ul>
+        </li>
+    </ul>
+</body>
+
+</html>
