@@ -25,7 +25,10 @@ export class AppService {
     new Expense('Hátizsák', 17000, 'misc'),
   ];
   getAll() {
-    return this.expenses;
+    return {
+      title:"Osszes",
+      koltesek: this.expenses
+    };
   }
   getTotal() {
     let osszeg = 0;
@@ -58,7 +61,7 @@ export class AppService {
   getMoreExpensiveThan(price: number) {
     const searchedExpenses: Expense[] = [];
     this.expenses.forEach((expense: Expense) => {
-      if (expense.amount > Number(price)) {
+      if (expense.amount > price) {
         searchedExpenses.push(expense);
       };
     });
@@ -74,7 +77,7 @@ export class AppService {
       osszKoltes += expense.amount;
     });
     const atlagosKoltes = osszKoltes / osszDarab;
-    const categories:Set<CategoryStats>= new Set();
+    const categories: Set<Expense['category']> = new Set();
     this.expenses.forEach((expense: Expense) => {
       categories.add(expense.category);
     });

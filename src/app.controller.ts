@@ -17,7 +17,7 @@ export class AppController {
   @Get("/top3")
   @Render("all")
   getTop3() {
-    this.appService.getTop3();
+    return this.appService.getTop3();
   };
   @Get("/search")
   @Render("all")
